@@ -16,8 +16,7 @@ def test_app(event_loop):
 
 @pytest.mark.asyncio()
 async def test_on_event(test_app):
-    pass
-    with patch(__name__ + '.src_data_topic') as mocked_src_data_topic:
+    with patch(f'{__name__}.src_data_topic') as mocked_src_data_topic:
         mocked_src_data_topic.send()
         print("==========")
         print(type(mocked_src_data_topic))

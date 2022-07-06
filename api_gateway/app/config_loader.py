@@ -3,7 +3,7 @@ import os
 from singleton import MetaSingleton
 from configloader import ConfigLoader
 
-config_abs_path = "/".join(os.path.abspath(__file__).split('/')[0:-1])
+config_abs_path = "/".join(os.path.abspath(__file__).split('/')[:-1])
 
 
 class Config(metaclass=MetaSingleton):

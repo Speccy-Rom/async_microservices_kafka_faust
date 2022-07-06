@@ -18,11 +18,10 @@ class DB(metaclass=MetaSingleton):
         self.db_engine = self.__create_engine()
 
     def __create_engine(self) -> AsyncEngine:
-        engine = create_async_engine(
+        return create_async_engine(
             config.get(config_loader.DB_URI),
             echo=True,
         )
-        return engine
 
     async def save_currency(self, pair_name: str, value: float) -> None:
         async with AsyncSession(self.db_engine) as session:
@@ -36,8 +35,9 @@ class DB(metaclass=MetaSingleton):
             async with session.begin():
                 selected_average_execution = await session.execute(
                     select(Average).filter(Average.pair_name == pair_name))
-                selected_average = selected_average_execution.scalars().first()
-                if selected_average:
+                if (
+                    selected_average := selected_average_execution.scalars().first()
+                ):
                     logger.info(f"Update existing average {pair_name}: {value}")
                     selected_average.value = value
                 else:
